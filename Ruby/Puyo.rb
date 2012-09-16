@@ -1,8 +1,33 @@
 require "pp"
 
+module Global_Puyo
+  @@coords = []
+  def search
+    @@coords.each do |key_y, y|
+      y.each do |key_x, x|
+        yield x, y
+      end
+    end
+  end
+  def output
+    @@coords.each do |key_y, y|
+      y.each do |key_x, x|
+        case x.type
+        when :none
+          print " "
+        else
+          print x.type
+        end
+      end
+      print "\n"
+    end
+    puts ""
+  end
+end
+
 class Puyo
   attr_accessor :x, :y, :type, :erase_flag, :checked
-  @@coords
+  include Global_Puyo
   @@color
   @@count
 
@@ -12,10 +37,6 @@ class Puyo
     @type = symbol
     @erase_flag = false
     @checked = false
-  end
-
-  def self.set_coords(coords)
-    @@coords = coords
   end
 
   def check_erase
@@ -53,22 +74,7 @@ class Puyo
     end
     erased
   end 
-
-  def self.output
-    @@coords.each do |key_y, y|
-      y.each do |key_x, x|
-        case x.type
-        when :none
-          print " "
-        else
-          print x.type
-        end
-      end
-      print "\n"
-    end
-    puts ""
-  end
-
+  
   def _check_erase
     raise "error!!2" if @erase_flag == true
     if @type == :none
@@ -99,8 +105,10 @@ class Puyo
 end
 
 class SolvePuyo
+  include Global_Puyo
+
   def initialize
-    @coords = Hash.new { |hash,key| hash[key] = {} }
+    @@coords = Hash.new { |hash,key| hash[key] = {} }
     input = set_problem
     input.each_line.with_index do |line, idx_y|
       line.each_byte.with_index do |str, idx_x|
@@ -113,42 +121,29 @@ class SolvePuyo
         else
           @type = str.chr
         end
-        @coords[idx_y][idx_x] = Puyo.new(idx_x, idx_y, @type)
+        @@coords[idx_y][idx_x] = Puyo.new(idx_x, idx_y, @type)
       end
     end
-    Puyo.set_coords(@coords)
   end
 
   def reset_check
-    @coords.each do |key, y|
-      y.each do |key, x|
-        x.checked = false
-      end
-    end
+    search {|x, y| x.checked = false}
   end
 
   def erase_phase
-    @coords.each do |key, y|
-      y.each do |key, x|
-        if x.erase
-          erase_phase
-        end
-      end
-    end
+    search {|x, y| erase_phase if x.erase }
   end
 
   def start_calc
-    @coords.each do |key, y|
-      y.each do |key, x|
-        if x.type == :none
-          next
-        else
-          if x.check_erase
-            reset_check
-            erase_phase
-            Puyo.output
-            start_calc
-          end
+    search do |x, y|
+      if x.type == :none
+        next
+      else
+        if x.check_erase
+          reset_check
+          erase_phase
+          output
+          start_calc
         end
       end
     end
