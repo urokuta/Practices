@@ -1,4 +1,4 @@
 Practices
 =========
 
-Practices
+たまに遊んだコードを置いておく場所
