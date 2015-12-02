@@ -1,10 +1,10 @@
 module CodeGolf
   # mergesort
-  module MergeSort1
+  module Mergesort1
     def m a;(s=a.size)<2?a:(l,r=a.each_slice(s-s/2).map{|i|m(i)})&&r.map{|i|l.insert(l.index{|j|j>i}||l.size,i)}&&l end
   end
   # mergesort with inject
-  module MergeSort2
+  module Mergesort2
     def m a;(s=a.size)<2?a:a.each_slice(s-s/2).map{|i|m(i)}.inject{|l,r|r.map{|i|l.insert(l.index{|j|j>i}||l.size,i)}&&l} end
   end
   # quicksort
