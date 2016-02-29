@@ -5,7 +5,7 @@ class Day10
       target = INPUT
       40.times.each do |i|
         puts i
-        target = look_and_say(target)
+        target = cool_look_and_say(target)
       end
       target.size
     end
@@ -29,7 +29,32 @@ class Day10
       result_str << same_chars.first
       result_str
     end
+
+    def cool_look_and_say(str)
+      result = ""
+      loop do
+        break if str.size == 0
+        repeat_num = head_repeat_num(str)
+        result << repeat_num.to_s
+        result << str[0]
+        str = str[repeat_num..-1]
+      end
+      result
+    end
+
+    def head_repeat_num(str)
+      counter = 0
+      str.chars.each do |c|
+        if c == str[0]
+          counter += 1
+        else
+          break
+        end
+      end
+      counter
+    end
   end
 end
 
 puts Day10.calc_p1
+# puts Day10.cool_look_and_say(Day10::INPUT)
