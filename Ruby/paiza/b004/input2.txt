@@ -1,0 +1,5 @@
+192.168.[0-100].*
+3
+192.168.99.112 - - [10/Jul/2013:13:53:15 +0900] "GET /top.html HTTP/1.1" 404 1426 "http://facebook.com" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36"
+192.168.81.20 - - [10/Jul/2013:15:06:33 +0900] "GET /hogehoge.html HTTP/1.1" 404 4374 "http://paiza.jp" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.116 Safari/537.36"
+192.168.223.58 - - [10/Jul/2013:21:32:01 +0900] "GET /hoge.html HTTP/1.1" 304 6601 "http://paiza.jp" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:22.0) Gecko/20100101 Firefox/22.0"
